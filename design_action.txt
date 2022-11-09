@@ -1,0 +1,64 @@
+phase 0: chọn hành động
+    0: Kết thúc
+    1: Lấy nguyên liệu
+    2: Úp thẻ
+    3: Mua thẻ
+
+phase 1: chọn nguyên liệu để lấy
+    4: lấy đỏ
+    5: lấy lam
+    6: lấy lục
+    7: lấy đen
+    8: lấy white
+    9: không lấy nữa (khi có trên 10 token)
+
+phase 2: chọn thẻ để úp
+    [10], [11], [12]: Úp thẻ base ẩn cấp 1, 2, 3
+    [13:25]: Lần lượt 12 vị trí thẻ base trên bàn
+    
+    [25], [26], [27]: Úp thẻ orient ẩn cấp 1, 2, 3
+    [28:34]: Lần lượt 6 vị trí thẻ orient trên bàn
+
+phase 3: chọn thẻ để mua
+    Nếu (state[547:552] == 0).all():
+        [34:46] chọn mua các thẻ base trên bàn chơi (12)
+        [46:52] chọn mua các thẻ orient trên bàn chơi (6)
+        [52:55] chọn mua các thẻ úp trong tay (Base or Orient)
+    Nếu không thì:
+        4, 5, 6, 7, 8: ứng với 5 loại nguyên liệu
+
+phase 4: chọn nguyên liệu để trả
+    55: trả đỏ
+    56: trả lam
+    57: trả lục
+    58: trả đen
+    59: trả trắng
+
+phase 5: chọn nguyên liệu để ghép đôi (thẻ orient nguyên liệu flexible)
+    60: thành token đỏ
+    61: thành token lam
+    62: thành token lục
+    63: thành token đen
+    64: thành token trắng
+
+phase 6: chọn thẻ để lấy free:
+    [65:73] chọn lấy các thẻ base cấp I, II (8)
+    [73:77] chọn lấy các thẻ orient cấp I, II (4)
+
+phase 7: chọn thẻ noble để úp:
+    [77:82]: Ứng với 5 vị trí noble
+
+
+Special Case phase 3:
+    Gọi a là số nl vàng bỏ ra
+        b là số nl vàng orient bỏ ra
+        p là nl thường bỏ ra (vector)
+        
+    Nếu b chẵn => pass vì kiểu gì cũng phải mất như thế
+
+    Nếu b lẻ:
+        Nếu a > 0: trừ a đi 1, tăng b thêm 1
+
+        Nếu a = 0:
+            Nếu p khác 0: cho bot chọn
+            Nếu p = 0: pass

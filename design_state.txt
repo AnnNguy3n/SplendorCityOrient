@@ -1,0 +1,75 @@
+Board:
+    [0:6] Nguyên liệu bank
+
+    Noble
+    [6:12:18:24:30:36] tempVal = 6
+
+    NormalCard
+    [36:47:58:69:80:91:102:113:124:135:146:157:168] tempVal = 11
+    [0] [36]: Điểm
+    [1:6] [37:42]: Loại nguyên liệu nhận được
+    [6:11] [42:47]: Nguyên liệu để mua
+
+    OrientCard
+    [168:189:210:231:252:273:294] tempVal = 21
+    [0] [168]: Điểm
+    [1:8] [169:176]: Loại nguyên liệu nhận được
+    [8:10] [176:178]: Được free thẻ cấp mấy
+    [10] [178]: Được úp Noble không
+    [11:16] [179:184]: Nguyên liệu thường để mua
+    [16:21] [184:189]: Nguyên liệu vĩnh viễn để mua
+
+    HiddenCard
+    [294] Còn thẻ base cấp 1 hay không
+    [295] Còn thẻ base cấp 2 hay không
+    [296] Còn thẻ base cấp 3 hay không
+    [297] Còn thẻ orient cấp 1 hay không
+    [298] Còn thẻ orient cấp 2 hay không
+    [299] Còn thẻ orient cấp 3 hay không
+
+    Player
+    [300:313:326:339:352] tempVal = 13
+    [0:6] [300:306]: Nguyên liệu thường
+    [6:11] [306:311]: Nguyên liệu vĩnh viễn
+    [11]: Nguyên liệu vàng của thẻ Orient
+    [12]: Điểm
+
+    SelfHiddenCard
+    [352:363:374:385] tempVal = 11
+    [0] [352]: Điểm
+    [1:6] [353:358]: Nguyên liệu vĩnh viễn nhận được
+    [6:11] [358:363]: Nguyên liệu để mua
+
+    SelfOrientHiddenCard
+    [385:406:427:448] tempVal = 21
+    [0] [385]: Điểm
+    [1:8] [386:393]: Nguyên liệu vv nhận được
+    [8:10] [393:395]: Được free thẻ cấp mấy
+    [10] [395]: Có được úp Noble không
+    [11:16] [396:401]: Nguyên liệu thường
+    [16:21] [401:406]: Nguyên liệu vĩnh viễn
+
+    EnemiesHiddenCard
+    [448:457:466:475]
+
+    EnemiesOrientHiddenCard
+    [475:484:493:502]
+
+    SelfHiddenNoble tempVal = 6
+    [502:508:514:520]
+    [0] [502]: Điểm
+    [1:6] [503:508]: Nguyên liệu để mua
+
+    EnemiesHiddenNoble
+    [520:523]
+
+    Other
+    [523:527]: Vị trí
+    [527:535]: Phase
+    [535:540]: Nguyên liệu đã lấy trong turn đó
+    [540:544]: Số thẻ đã mua của các người chơi
+    [544]: Game đã kết thúc hay chưa
+    [545:547]: Được lấy thẻ free cấp mấy
+
+    Special Case
+    [547:552] Special Case phase 3

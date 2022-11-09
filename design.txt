@@ -1,0 +1,54 @@
+normalCardInfor = array [
+    90 array 1 chiều, độ dài 7
+    Mỗi array:
+        [0]: Điểm
+        [1]: Nguyên liệu nhận được
+        [2:7]: Nguyên liệu để mua
+]
+
+nobleCardInfor = array [
+    10 array 1 chiều, độ dài 6
+    Mỗi array:
+        [0]: Điểm
+        [1:6]: Nguyên liệu để mua
+]
+
+orientCardInfor = array [
+    30 array 1 chiều, độ dài 15
+    Mỗi array:
+        [0]: Điểm
+        [1]: Nguyên liệu vĩnh viễn
+        [2]: Số lượng nguyên liệu vĩnh viễn
+        [3]: Được free thẻ cấp mấy
+        [4]: Được úp thẻ noble hay không
+        [5:10]: Giá nguyên liệu thường
+        [10:15]: Giá nguyên liệu vĩnh viễn
+]
+
+env:
+    Board
+    [0:6] Nguyên liệu trên bàn chơi
+    [6:11] Thẻ quý tộc
+    [11:15:19:23] Thẻ base cấp I, II, II (id từ 0 đến 89)
+    [23:25:27:29] Thẻ orient cấp I, II, II (id từ 90 đến 119)
+
+    Player: [29:48:67:86:105] tempVal = 19
+    [0:6] [29:35]: Nguyên liệu thường
+    [6:11] [35:40]: Nguyên liệu vĩnh viễn
+    [11] [40]: Nguyên liệu vàng từ thẻ orient
+    [12] [41]: Điểm
+    [13:16] [42:45]: Id các thẻ úp
+    [16:19] [45:48]: Id các thẻ noble đang úp
+
+    Bổ sung
+    [105]: Turn
+    [106]: Phase
+    [107:112]: Nguyên liệu đã lấy trong turn đó (Special Case phase 1)
+    [112:116]: Số thẻ đã mua của người chơi
+    [116]: Game đó đã kết thúc hay chưa
+    [117]: Được lấy free thẻ cấp mấy (Special Case phase 3)
+    [118:123]: Khi array này khác 0, bot chỉ được chọn 1 trong các action nào đó (Special Case phase 3)
+    [123]: nlG (Special Case phase 3)
+    [124]: nlgOrient (Special Case phase 3)
+    [125]: posE (Special Case phase 3)
+    
