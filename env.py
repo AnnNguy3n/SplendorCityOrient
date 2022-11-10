@@ -67,6 +67,48 @@ def initEnv():
     return env, lv1, lv2, lv3, oriLv1, oriLv2, oriLv3
 
 
+
+def visualizeEnv(env_, lv1, lv2, lv3, oriLv1, oriLv2, oriLv3):
+    env = env_.copy()
+    dict_ = {}
+    dict_['BoardGems'] = env[0:6]
+    dict_['NobleID'] = env[6:11] + 1
+
+    dict_['BaseCard'] = {}
+    dict_['BaseCard']['Lv1'] = env[11:15] + 1
+    dict_['BaseCard']['Lv2'] = env[15:19] + 1
+    dict_['BaseCard']['Lv3'] = env[19:23] + 1
+
+    dict_['OrientCard'] = {}
+    dict_['OrientCard']['Lv1'] = env[23:25] + 1
+    dict_['OrientCard']['Lv2'] = env[25:27] + 1
+    dict_['OrientCard']['Lv3'] = env[27:29] + 1
+
+    for i in range(4):
+        dict_[f'Player_{i}'] = {}
+        pInfor = env[29+19*i:48+19*i]
+        dict_[f'Player_{i}']['Gems'] = pInfor[0:6]
+        dict_[f'Player_{i}']['PerGems'] = pInfor[6:11]
+        dict_[f'Player_{i}']['OrientGoldGems'] = pInfor[11]
+        dict_[f'Player_{i}']['Score'] = pInfor[12]
+        dict_[f'Player_{i}']['HidingCards'] = pInfor[13:16] + 1
+        dict_[f'Player_{i}']['HidingNobles'] = pInfor[16:19] + 1
+    
+    dict_['Turn'] = env[105]
+    dict_['Phase'] = env[106]
+    dict_['TakenStocks'] = env[107:112]
+    dict_['NumBoughtCards'] = env[112:116]
+    dict_['EndGame'] = env[116]
+    dict_['HideCardsLv1Order'] = lv1[:-1], lv1[-1]
+    dict_['HideCardsLv2Order'] = lv2[:-1], lv2[-1]
+    dict_['HideCardsLv3Order'] = lv3[:-1], lv3[-1]
+    dict_['HideOrientLv1Order'] = lv1[:-1], lv1[-1]
+    dict_['HideOrientLv2Order'] = lv2[:-1], lv2[-1]
+    dict_['HideOrientLv3Order'] = lv3[:-1], lv3[-1]
+    
+    return dict_
+
+
 @njit
 def getStateSize():
     return __STATE_SIZE__
@@ -688,6 +730,11 @@ def stepEnv(action, env, lv1, lv2, lv3, oriLv1, oriLv2, oriLv3):
 
 
 @njit
+def getAgentSize():
+    return __AGENT_SIZE__
+
+
+@njit
 def checkEnded(env):
     scoreArr = env[np.array([41, 60, 79, 98])]
     maxScore = np.max(scoreArr)
@@ -704,6 +751,36 @@ def checkEnded(env):
             return maxScorePlayers[winnerIdx]
     else: # Chưa kết thúc game
         return -1
+
+
+@njit
+def getReward(state):
+    if state[544] == 0:
+        return 0
+    else:
+        scoreArr = state[np.array([312, 325, 338, 351])]
+        maxScore = np.max(scoreArr)
+        if scoreArr[0] < maxScore: # Điểm của bản thân không cao nhất
+            return -1
+        else: # Điểm của bản thân bằng số điểm cao nhất
+            maxScorePlayers = np.where(scoreArr==maxScore)[0]
+            if len(maxScorePlayers) == 1: # Bản thân là người duy nhất đạt điểm cao nhất
+                return 1
+            else:
+                playerBoughtCards = state[maxScorePlayers+540]
+                min_ = np.min(playerBoughtCards)
+                if playerBoughtCards[0] > min_: # Số thẻ của bản thân nhiều hơn
+                    return -1
+                else: # Bản thân mua số lượng thẻ ít nhất
+                    lstChk = maxScorePlayers[np.where(playerBoughtCards==min_)[0]]
+                    if len(lstChk) == 1: # Bản thân là người duy nhất có số lượng thẻ ít nhất
+                        return 1
+                    else: # Phải xét vị trí của bản thân
+                        selfId = np.where(state[523:527] == 1)[0][0]
+                        if selfId + lstChk[1] >= 4: # Chứng tỏ bản thân đi sau cùng trong lst
+                            return 1
+                        else: # Chứng tỏ có ít nhất một người trong list đi sau bản thân
+                            return -1
 
 
 
