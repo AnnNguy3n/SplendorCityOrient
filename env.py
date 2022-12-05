@@ -756,12 +756,14 @@ def checkEnded(env):
 @njit
 def getReward(state):
     if state[544] == 0:
-        return 0
+        return -1
     else:
         scoreArr = state[np.array([312, 325, 338, 351])]
         maxScore = np.max(scoreArr)
+        if maxScore < 15: # Không ai thắng
+            return 0
         if scoreArr[0] < maxScore: # Điểm của bản thân không cao nhất
-            return -1
+            return 0
         else: # Điểm của bản thân bằng số điểm cao nhất
             maxScorePlayers = np.where(scoreArr==maxScore)[0]
             if len(maxScorePlayers) == 1: # Bản thân là người duy nhất đạt điểm cao nhất
@@ -770,7 +772,7 @@ def getReward(state):
                 playerBoughtCards = state[maxScorePlayers+540]
                 min_ = np.min(playerBoughtCards)
                 if playerBoughtCards[0] > min_: # Số thẻ của bản thân nhiều hơn
-                    return -1
+                    return 0
                 else: # Bản thân mua số lượng thẻ ít nhất
                     lstChk = maxScorePlayers[np.where(playerBoughtCards==min_)[0]]
                     if len(lstChk) == 1: # Bản thân là người duy nhất có số lượng thẻ ít nhất
@@ -780,7 +782,7 @@ def getReward(state):
                         if selfId + lstChk[1] >= 4: # Chứng tỏ bản thân đi sau cùng trong lst
                             return 1
                         else: # Chứng tỏ có ít nhất một người trong list đi sau bản thân
-                            return -1
+                            return 0
 
 
 
@@ -800,6 +802,8 @@ def run(listAgent, perData):
         winner = checkEnded(env)
         if winner != -1:
             break
+    
+    env[116] = 1
     
     for pIdx in range(4):
         env[105] = pIdx
@@ -833,6 +837,8 @@ def numbaRun(p0, p1, p2, p3, perData, pIdOrder):
         winner = checkEnded(env)
         if winner != -1:
             break
+    
+    env[116] = 1
     
     for pIdx in range(4):
         env[105] = pIdx
