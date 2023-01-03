@@ -1,5 +1,6 @@
 from sub_func import *
 from numba.typed import List
+from numba import jit
 
 __ENV_SIZE__ = 126
 __STATE_SIZE__ = 552
@@ -940,7 +941,7 @@ def one_game_numba(p0, list_other, per_player, per1, per2, per3, p1, p2, p3):
         if list_action[action] != 1:
             raise Exception("Action không hợp lệ")
 
-        stepEnv(action, env, lv1, lv2, lv3)
+        stepEnv(action, env, lv1, lv2, lv3, oriLv1, oriLv2, oriLv3)
         winner = checkEnded(env)
         if winner != -1:
             break
